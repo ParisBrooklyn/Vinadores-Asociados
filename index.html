@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="stylesheet" href="_ds/clfanagt-design-system-019df8da-856b-71af-b57d-57f278abbeae/tokens.css">
+<script src="_ds/clfanagt-design-system-019df8da-856b-71af-b57d-57f278abbeae/_ds_bundle.js"></script>
+<script src="./image-slot.js"></script>
+<style>
+html,body{margin:0;padding:0}
+.va-drop-panel{display:none;position:absolute;top:100%;left:0;min-width:180px;background:#F5F0E8;border:1px solid #1A1612;box-shadow:0 12px 28px -8px rgba(13,11,8,0.35);z-index:40;padding:6px 0}
+.va-drop:hover .va-drop-panel,.va-drop:focus-within .va-drop-panel,.va-drop.va-open .va-drop-panel{display:block}
+@media (max-width:760px){
+  header{padding:12px 20px !important;gap:12px !important}
+  header nav{order:3;width:100%;justify-content:center;gap:22px !important}
+  .va-hide-mobile{display:none !important}
+  .va-split{grid-template-columns:1fr !important}
+  .va-footer-grid{grid-template-columns:1fr 1fr !important;gap:32px !important}
+}
+@media (max-width:480px){
+  .va-footer-grid{grid-template-columns:1fr !important}
+}
+.va-drop-panel a,.va-drop-panel button{display:block;width:100%;text-align:left;background:none;border:none;font-family:'Inter',sans-serif;font-size:13px;color:#0D0B08;padding:9px 18px;cursor:pointer;text-decoration:none;letter-spacing:0.01em}
+.va-drop-panel a:hover,.va-drop-panel button:hover{background:#EBE3D6}
+.va-slide-nav-btn{cursor:pointer}
+input::placeholder{color:#8A8178}
+</style>
+</helmet>
+<div data-direction="A" style="font-family:'Inter',system-ui,sans-serif;background:#F5F0E8;background-image:radial-gradient(circle at 20% 10%,rgba(193,127,36,0.05),transparent 40%),radial-gradient(circle at 80% 90%,rgba(13,11,8,0.04),transparent 45%);color:#0D0B08;min-height:100vh;display:flex;flex-direction:column">
+
+<header style="position:sticky;top:0;z-index:50;background:#F5F0E8;border-bottom:1px solid #1A1612;display:flex;align-items:center;justify-content:space-between;padding:14px 40px;gap:24px;flex-wrap:wrap">
+  <div onClick="{{ goHome }}" style="cursor:pointer;display:flex;align-items:center;gap:14px">
+    <img src="uploads/Assets/03_logo_oval.jpg" alt="Viñadores Asociados" style="height:52px;width:auto;object-fit:contain">
+  </div>
+  <nav style="display:flex;align-items:center;gap:30px;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;font-weight:500">
+    <a onClick="{{ goHome }}" style="color:#0D0B08;text-decoration:none;cursor:pointer" style-hover="color:#C17F24">{{ t.nav.home }}</a>
+    <div class="{{ wineriesDropClass }}" tabindex="0" style="position:relative;padding:6px 0">
+      <span onClick="{{ toggleWineriesMenu }}" style="cursor:pointer;color:#0D0B08">{{ t.nav.wineries }} ▾</span>
+      <div class="va-drop-panel">
+        <sc-for list="{{ wineries }}" as="w" hint-placeholder-count="3">
+          <a onClick="{{ w.goToThis }}">{{ w.name }}</a>
+        </sc-for>
+      </div>
+    </div>
+    <a onClick="{{ goAbout }}" style="color:#0D0B08;text-decoration:none;cursor:pointer" style-hover="color:#C17F24">{{ t.nav.about }}</a>
+  </nav>
+  <div style="display:flex;align-items:center;gap:22px">
+    <div class="{{ langDropClass }}" tabindex="0" style="position:relative;padding:6px 0;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:500">
+      <span onClick="{{ toggleLangMenu }}" style="cursor:pointer;display:flex;align-items:center;gap:6px">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0D0B08" stroke-width="1.6"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19M12 2.5c2.8 2.6 4.3 6 4.3 9.5s-1.5 6.9-4.3 9.5c-2.8-2.6-4.3-6-4.3-9.5S9.2 5.1 12 2.5z"/></svg>
+        {{ langLabel }} ▾
+      </span>
+      <div class="va-drop-panel">
+        <button onClick="{{ setLangEs }}">Español</button>
+        <button onClick="{{ setLangPt }}">Português</button>
+        <button onClick="{{ setLangEn }}">English</button>
+      </div>
+    </div>
+    <a onClick="{{ goCart }}" style="cursor:pointer;display:flex;align-items:center;gap:7px;color:#0D0B08;text-decoration:none;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:500">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D0B08" stroke-width="1.7"><path d="M3 4h2l2.4 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9.5" cy="20.5" r="1.3" fill="#0D0B08"/><circle cx="17.5" cy="20.5" r="1.3" fill="#0D0B08"/></svg>
+      {{ t.nav.cart }} ({{ cartCount }})
+    </a>
+  </div>
+</header>
+
+<sc-if value="{{ showNotice }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;top:80px;right:24px;z-index:80;background:#0D0B08;color:#F5F0E8;padding:14px 22px;font-family:'DM Sans',sans-serif;font-size:13px;letter-spacing:0.02em;box-shadow:0 12px 30px -8px rgba(0,0,0,0.4);max-width:320px">{{ cartNoticeText }}</div>
+</sc-if>
+
+<main style="flex:1;display:flex;flex-direction:column">
+
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+<section data-screen-label="Home">
+  <div style="position:relative;width:100%;height:78vh;min-height:520px;overflow:hidden">
+    <sc-for list="{{ heroSlides }}" as="hs" hint-placeholder-count="3">
+      <div style="{{ hs.bgStyle }}"></div>
+    </sc-for>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,11,8,0.15),rgba(13,11,8,0.55))"></div>
+    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 24px;color:#F5F0E8">
+      <div style="font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.24em;text-transform:uppercase;margin-bottom:22px;opacity:0.85">{{ t.home.eyebrow }}</div>
+      <h1 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:500;font-size:clamp(40px,6vw,76px);line-height:1.08;margin:0 0 24px;max-width:900px">{{ t.home.heroTitle }}</h1>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(18px,2vw,24px);max-width:620px;line-height:1.5;margin:0 0 34px;opacity:0.95">{{ t.home.heroSubtitle }}</p>
+      <a onClick="{{ goToWineries }}" style="cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;border:1px solid #F5F0E8;padding:15px 34px;color:#F5F0E8;text-decoration:none" style-hover="background:#F5F0E8;color:#0D0B08">{{ t.home.heroCta }}</a>
+    </div>
+    <div style="position:absolute;left:0;right:0;bottom:26px;display:flex;justify-content:center;gap:10px">
+      <sc-for list="{{ heroSlides }}" as="hs" hint-placeholder-count="3">
+        <button onClick="{{ hs.goTo }}" style="{{ hs.dotStyle }}"></button>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="position:relative;padding:110px 8vw;background:#0D0B08;color:#F5F0E8;overflow:hidden">
+    <img src="uploads/Assets/01_shared_harvest_workers_bw.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.3">
+    <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(13,11,8,0.92),rgba(13,11,8,0.55))"></div>
+    <div style="position:relative;max-width:640px">
+      <div style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#C17F24;margin-bottom:20px">{{ t.home.manifestoEyebrow }}</div>
+      <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:500;font-size:clamp(28px,3.6vw,42px);line-height:1.25;margin:0 0 28px">{{ t.home.manifestoTitle }}</h2>
+      <p style="font-family:'Inter',sans-serif;font-size:16px;line-height:1.8;color:#EBE3D6;margin:0 0 32px">{{ t.home.manifestoBody }}</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 28px">
+        <sc-for list="{{ t.home.manifestoPoints }}" as="pt" hint-placeholder-count="6">
+          <div style="display:flex;align-items:baseline;gap:10px;font-family:'DM Sans',sans-serif;font-size:13px;letter-spacing:0.02em;color:#F5F0E8"><span style="color:#C17F24">—</span>{{ pt }}</div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <div class="va-split" style="display:grid;grid-template-columns:1.1fr 0.9fr;align-items:stretch">
+    <div style="padding:100px 7vw;display:flex;flex-direction:column;justify-content:center">
+      <div style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#8A8178;margin-bottom:20px">{{ t.home.partnersEyebrow }}</div>
+      <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:500;font-size:clamp(26px,3.2vw,38px);line-height:1.25;margin:0 0 24px">{{ t.home.partnersTitle }}</h2>
+      <p style="font-family:'Inter',sans-serif;font-size:16px;line-height:1.8;color:#1A1612;max-width:520px;margin:0">{{ t.home.partnersBody }}</p>
+    </div>
+    <img src="uploads/Assets/04_shared_three_winemakers.jpg" alt="" style="width:100%;height:100%;min-height:420px;object-fit:cover">
+  </div>
+
+  <div style="position:relative;padding:70px 7vw 0">
+    <img src="uploads/Assets/02_shared_geese_vineyard.jpg" alt="" style="width:100%;height:340px;object-fit:cover">
+  </div>
+
+  <div id="va-wineries-section" style="padding:110px 7vw">
+    <div style="text-align:center;max-width:640px;margin:0 auto 60px">
+      <div style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#8A8178;margin-bottom:20px">{{ t.home.wineriesEyebrow }}</div>
+      <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:500;font-size:clamp(26px,3.2vw,38px);line-height:1.2;margin:0">{{ t.home.wineriesTitle }}</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:36px">
+      <sc-for list="{{ wineries }}" as="w" hint-placeholder-count="3">
+        <div onClick="{{ w.goToThis }}" style="cursor:pointer;background:#F5F0E8;border:1px solid #C9C2B8">
+          <div style="position:relative;height:280px;overflow:hidden">
+            <div style="{{ w.heroStyle }}"></div>
+          </div>
+          <div style="padding:28px 26px">
+            <div style="font-family:'DM Sans',sans-serif;font-size:10.5px;letter-spacing:0.18em;text-transform:uppercase;color:#8A8178;margin-bottom:10px">{{ w.region }} · {{ w.founded }}</div>
+            <h3 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:500;font-size:26px;margin:0 0 14px">{{ w.name }}</h3>
+            <div style="font-family:'DM Sans',sans-serif;font-size:11.5px;letter-spacing:0.14em;text-transform:uppercase;color:#C17F24">{{ t.home.discoverLabel }} →</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+</sc-if>
+
+<sc-if value="{{ isWinery }}" hint-placeholder-val="{{ false }}">
+<section data-screen-label="Winery">
+  <div style="position:relative;width:100%;height:70vh;min-height:460px;overflow:hidden">
+    <sc-for list="{{ currentSlides }}" as="sl" hint-placeholder-count="3">
+      <div style="{{ sl.wrapStyle }}">
+        <sc-if value="{{ sl.isPhoto }}" hint-placeholder-val="{{ true }}">
+          <div style="{{ sl.bgStyle }}"></div>
+        </sc-if>
+        <sc-if value="{{ sl.isSlot }}" hint-placeholder-val="{{ false }}">
+          <image-slot id="{{ sl.id }}" shape="rect" placeholder="{{ sl.placeholder }}"></image-slot>
+        </sc-if>
+      </div>
+    </sc-for>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,11,8,0.1),rgba(13,11,8,0.6));pointer-events:none"></div>
+    <div style="position:absolute;left:7vw;bottom:56px;color:#F5F0E8;pointer-events:none">
+      <div style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:14px;opacity:0.9">{{ currentWinery.region }} · {{ t.winery.foundedLabel }} {{ currentWinery.founded }}</div>
+      <h1 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:500;font-size:clamp(38px,5.6vw,68px);margin:0">{{ currentWinery.name }}</h1>
+    </div>
+    <div style="position:absolute;right:7vw;bottom:56px;display:flex;gap:10px;pointer-events:auto">
+      <button onClick="{{ prevSlide }}" class="va-slide-nav-btn" style="width:40px;height:40px;border-radius:50%;border:1px solid rgba(245,240,232,0.6);background:rgba(13,11,8,0.3);color:#F5F0E8;font-size:16px">‹</button>
+      <button onClick="{{ nextSlide }}" class="va-slide-nav-btn" style="width:40px;height:40px;border-radius:50%;border:1px solid rgba(245,240,232,0.6);background:rgba(13,11,8,0.3);color:#F5F0E8;font-size:16px">›</button>
+    </div>
+  </div>
+
+  <div class="va-split" style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+    <div style="padding:100px 7vw;border-right:1px solid #C9C2B8">
+      <div style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#8A8178;margin-bottom:18px">{{ t.winery.storyTitle }}</div>
+      <p style="font-family:'Inter',sans-serif;font-size:16px;line-height:1.85;color:#1A1612;margin:0 0 22px">{{ currentWinery.story }}</p>
+      <div style="font-family:'DM Sans',sans-serif;font-size:12.5px;letter-spacing:0.04em;color:#0D0B08"><strong>{{ t.winery.founderLabel }}:</strong> {{ currentWinery.founders }}</div>
+    </div>
+    <div style="padding:100px 7vw;background:#EBE3D6">
+      <div style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#8A8178;margin-bottom:18px">{{ t.winery.philosophyTitle }}</div>
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;line-height:1.6;color:#0D0B08;margin:0">{{ currentWinery.philosophy }}</p>
+    </div>
+  </div>
+
+  <div style="padding:110px 7vw">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:56px;flex-wrap:wrap;gap:16px">
+      <h2 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:500;font-size:clamp(26px,3.2vw,38px);margin:0">{{ t.winery.shopTitle }}</h2>
+      <div style="font-family:'DM Sans',sans-serif;font-size:11.5px;letter-spacing:0.1em;text-transform:uppercase;color:#8A8178">{{ currentWinery.name }}</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:30px">
+      <sc-for list="{{ currentWinery.wines }}" as="wn" hint-placeholder-count="4">
+        <div style="background:#F5F0E8;border:1px solid #C9C2B8;display:flex;flex-direction:column">
+          <div style="aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;background:#EBE3D6;color:#8A8178">
+            <sc-if value="{{ wn.hasBottle }}" hint-placeholder-val="{{ false }}">
+              <div style="{{ wn.bottleStyle }}"></div>
+            </sc-if>
+            <sc-if value="{{ wn.noBottle }}" hint-placeholder-val="{{ true }}">
+              <svg width="88" height="123" viewBox="0 0 40 56"><g fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 6h16v10c6 4 8 9 8 16v18a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V32c0-7 2-12 8-16V6z"/><line x1="6" y1="22" x2="30" y2="22"/><rect x="8" y="30" width="20" height="12"/></g></svg>
+            </sc-if>
+          </div>
+          <div style="padding:24px;display:flex;flex-direction:column;gap:8px;flex:1">
+            <h3 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:500;font-size:19px;margin:0">{{ wn.name }}</h3>
+            <div style="font-family:'DM Sans',sans-serif;font-size:11.5px;letter-spacing:0.06em;color:#8A8178;flex:1">{{ wn.varietal }}</div>
+            <button onClick="{{ wn.add }}" style="margin-top:12px;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;background:#0D0B08;color:#F5F0E8;border:none;padding:13px 0;cursor:pointer" style-hover="background:#C17F24;color:#0D0B08">{{ t.winery.addToCart }}</button>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+</sc-if>
+
+<sc-if value="{{ isAbout }}" hint-placeholder-val="{{ false }}">
+<section data-screen-label="About" style="padding:120px 7vw 100px;max-width:1100px;margin:0 auto">
+  <div style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#8A8178;margin-bottom:20px">{{ t.about.eyebrow }}</div>
+  <h1 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:500;font-size:clamp(32px,4.4vw,52px);margin:0 0 32px">{{ t.about.title }}</h1>
+  <p style="font-family:'Inter',sans-serif;font-size:16px;line-height:1.85;max-width:680px;margin:0 0 60px;color:#1A1612">{{ t.about.intro }}</p>
+  <img src="uploads/Assets/04_shared_three_winemakers.jpg" alt="" style="width:100%;max-height:480px;object-fit:cover;margin-bottom:80px">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:36px">
+    <sc-for list="{{ wineries }}" as="w" hint-placeholder-count="3">
+      <div style="border-top:2px solid #0D0B08;padding-top:22px">
+        <h3 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:500;font-size:22px;margin:0 0 14px">{{ w.name }}</h3>
+        <div style="font-family:'Inter',sans-serif;font-size:13.5px;line-height:1.9;color:#1A1612">
+          <div>{{ w.region }}</div>
+          <div>{{ w.email }}</div>
+          <div>{{ w.phone }}</div>
+          <div>{{ w.address }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+</section>
+</sc-if>
+
+<sc-if value="{{ isSimplePage }}" hint-placeholder-val="{{ false }}">
+<section data-screen-label="StandardPage" style="padding:130px 7vw 120px;max-width:760px;margin:0 auto">
+  <div style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#8A8178;margin-bottom:20px">{{ t.legalEyebrow }}</div>
+  <h1 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:500;font-size:clamp(30px,4vw,46px);margin:0 0 34px">{{ simplePageTitle }}</h1>
+  <p style="font-family:'Inter',sans-serif;font-size:15.5px;line-height:1.9;color:#1A1612;margin:0">{{ simplePageBody }}</p>
+</section>
+</sc-if>
+
+<sc-if value="{{ isCart }}" hint-placeholder-val="{{ false }}">
+<section data-screen-label="Cart" style="padding:120px 7vw 120px;max-width:860px;margin:0 auto;width:100%">
+  <h1 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:500;font-size:clamp(30px,4vw,46px);margin:0 0 12px">{{ t.cart.title }}</h1>
+  <sc-if value="{{ cartWinery }}" hint-placeholder-val="{{ false }}">
+    <div style="font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#8A8178;margin-bottom:40px">{{ t.cart.orderFrom }} {{ cartWinery.name }}</div>
+  </sc-if>
+  <sc-if value="{{ cartEmpty }}" hint-placeholder-val="{{ false }}">
+    <div style="padding:60px 0;text-align:center;border-top:1px solid #C9C2B8">
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:#8A8178;margin:0 0 26px">{{ t.cart.empty }}</p>
+      <a onClick="{{ goToWineries }}" style="cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#0D0B08;border-bottom:1px solid #0D0B08;padding-bottom:4px">{{ t.cart.browse }}</a>
+    </div>
+  </sc-if>
+  <sc-if value="{{ cartHasItems }}" hint-placeholder-val="{{ false }}">
+    <div style="border-top:1px solid #C9C2B8">
+      <sc-for list="{{ cartItems }}" as="ci" hint-placeholder-count="2">
+        <div style="display:flex;align-items:center;gap:24px;padding:26px 0;border-bottom:1px solid #C9C2B8">
+          <div style="width:44px;height:80px;flex:none;display:flex;align-items:center;justify-content:center;color:#8A8178">
+            <svg width="27" height="38" viewBox="0 0 40 56"><g fill="none" stroke="currentColor" stroke-width="2"><path d="M10 6h16v10c6 4 8 9 8 16v18a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V32c0-7 2-12 8-16V6z"/><line x1="6" y1="22" x2="30" y2="22"/></g></svg>
+          </div>
+          <div style="flex:1">
+            <div style="font-family:'Playfair Display',serif;font-style:italic;font-weight:500;font-size:18px">{{ ci.name }}</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.06em;color:#8A8178;margin-top:4px">{{ ci.varietal }}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-family:'DM Sans',sans-serif;font-size:13px">
+            <button onClick="{{ ci.dec }}" style="width:28px;height:28px;border:1px solid #C9C2B8;background:none;cursor:pointer">–</button>
+            <span style="width:24px;text-align:center">{{ ci.qty }}</span>
+            <button onClick="{{ ci.inc }}" style="width:28px;height:28px;border:1px solid #C9C2B8;background:none;cursor:pointer">+</button>
+          </div>
+          <button onClick="{{ ci.remove }}" style="background:none;border:none;color:#8A8178;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer" style-hover="color:#0D0B08">{{ t.cart.remove }}</button>
+        </div>
+      </sc-for>
+      <div style="padding:36px 0;display:flex;flex-direction:column;align-items:flex-end;gap:18px">
+        <div style="font-family:'DM Sans',sans-serif;font-size:12.5px;color:#8A8178">{{ t.cart.pricingNote }}</div>
+        <button onClick="{{ goCheckoutPlaceholder }}" style="font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;background:#0D0B08;color:#F5F0E8;border:none;padding:16px 44px;cursor:pointer" style-hover="background:#C17F24;color:#0D0B08">{{ t.cart.checkout }}</button>
+      </div>
+    </div>
+  </sc-if>
+</section>
+</sc-if>
+
+</main>
+
+<footer style="background:#0D0B08;color:#EBE3D6;padding:80px 7vw 40px">
+  <div class="va-footer-grid" style="display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:48px;padding-bottom:56px;border-bottom:1px solid #1A1612">
+    <div>
+      <img src="uploads/Assets/03_logo_oval.jpg" alt="Viñadores Asociados" style="height:56px;object-fit:contain;margin-bottom:18px;filter:brightness(1.6)">
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:#C9C2B8;max-width:220px;margin:0">{{ t.footer.tagline }}</p>
+    </div>
+    <div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A8178;margin-bottom:18px">{{ t.footer.wineriesLabel }}</div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <sc-for list="{{ wineries }}" as="w" hint-placeholder-count="3">
+          <a onClick="{{ w.goToThis }}" style="cursor:pointer;color:#EBE3D6;text-decoration:none;font-family:'Inter',sans-serif;font-size:13.5px" style-hover="color:#C17F24">{{ w.name }}</a>
+        </sc-for>
+      </div>
+    </div>
+    <div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A8178;margin-bottom:18px">{{ t.footer.legalLabel }}</div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <a onClick="{{ goShipping }}" style="cursor:pointer;color:#EBE3D6;text-decoration:none;font-family:'Inter',sans-serif;font-size:13.5px" style-hover="color:#C17F24">{{ t.footer.shipping }}</a>
+        <a onClick="{{ goTerms }}" style="cursor:pointer;color:#EBE3D6;text-decoration:none;font-family:'Inter',sans-serif;font-size:13.5px" style-hover="color:#C17F24">{{ t.footer.terms }}</a>
+        <a onClick="{{ goPrivacy }}" style="cursor:pointer;color:#EBE3D6;text-decoration:none;font-family:'Inter',sans-serif;font-size:13.5px" style-hover="color:#C17F24">{{ t.footer.privacy }}</a>
+      </div>
+    </div>
+    <div>
+      <sc-if value="{{ showNewsletter }}" hint-placeholder-val="{{ true }}">
+        <div style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A8178;margin-bottom:18px">{{ t.footer.newsletterLabel }}</div>
+        <div style="display:flex;border-bottom:1px solid #8A8178;padding-bottom:8px;margin-bottom:26px">
+          <input type="email" placeholder="{{ t.footer.emailPlaceholder }}" style="flex:1;background:none;border:none;color:#EBE3D6;font-family:'Inter',sans-serif;font-size:13px;outline:none">
+          <button style="background:none;border:none;color:#C17F24;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer">{{ t.footer.subscribe }}</button>
+        </div>
+      </sc-if>
+      <div style="display:flex;gap:14px">
+        <div style="width:34px;height:34px;border:1px solid #8A8178;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;color:#C9C2B8">IG</div>
+        <div style="width:34px;height:34px;border:1px solid #8A8178;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;color:#C9C2B8">FB</div>
+      </div>
+    </div>
+  </div>
+  <div style="padding-top:26px;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.04em;color:#8A8178">{{ t.footer.rights }}</div>
+</footer>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000},&quot;defaultLang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;es&quot;,&quot;options&quot;:[&quot;es&quot;,&quot;pt&quot;,&quot;en&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;cartLockMode&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;block&quot;,&quot;options&quot;:[&quot;block&quot;,&quot;autoClear&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;showNewsletter&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;}}">
+const WINERIES_DATA = [
+  {
+    id:'montsecano', founded:2004, founders:'Julio Donoso · Enólogo André Ostertag',
+    heroImg:'uploads/Assets/05_montsecano_cellar.jpg',
+    email:'contacto@montsecano.cl', phone:'+56 9 8123 4567', address:'Camino Casablanca–Lo Orozco, Valle de Casablanca, Chile',
+    name:{es:'Montsecano', pt:'Montsecano', en:'Montsecano'},
+    region:{es:'Valle de Casablanca', pt:'Vale de Casablanca', en:'Casablanca Valley'},
+    story:{
+      es:'Fundada en 2004 por Julio Donoso junto al enólogo alsaciano André Ostertag, Montsecano nació de una apuesta poco común en Chile: plantar Pinot Noir sobre suelos graníticos y de pizarra en las colinas de Casablanca, a pocos kilómetros del Pacífico. El proyecto se construyó a mano, viña por viña, siguiendo el ritmo del clima costero antes que el del mercado.',
+      pt:'Fundada em 2004 por Julio Donoso junto com o enólogo alsaciano André Ostertag, a Montsecano nasceu de uma aposta pouco comum no Chile: plantar Pinot Noir sobre solos graníticos e de ardósia nas colinas de Casablanca, a poucos quilômetros do Pacífico. O projeto foi construído à mão, vinha por vinha, seguindo o ritmo do clima costeiro, não o do mercado.',
+      en:'Founded in 2004 by Julio Donoso alongside Alsatian enologist André Ostertag, Montsecano grew out of an unusual bet for Chile: planting Pinot Noir on granitic, slate-laced hillsides in Casablanca, a few kilometers from the Pacific. The project was built by hand, vineyard by vineyard, following the rhythm of the coastal climate rather than the market.'
+    },
+    philosophy:{
+      es:'Vendimia manual, fermentaciones espontáneas y la menor intervención posible: dejamos que el granito y la niebla costera hablen a través del Pinot Noir.',
+      pt:'Colheita manual, fermentações espontâneas e a menor intervenção possível: deixamos que o granito e a névoa costeira falem através do Pinot Noir.',
+      en:'Hand-picked fruit, spontaneous fermentations, and the least intervention possible: we let the granite and coastal fog speak through Pinot Noir.'
+    },
+    slides:[
+      {type:'photo', src:'uploads/Assets/05_montsecano_cellar.jpg'},
+      {type:'photo', src:'uploads/Assets/montsecano-egg-fermenters-ducks.jpg'},
+      {type:'photo', src:'uploads/Assets/montsecano-horse-plow-bw.jpeg'},
+      {type:'photo', src:'uploads/Assets/montsecano-cellar-door.jpg'}
+    ],
+    wines:[
+      {id:'mo-refugio', name:'Refugio', varietal:{es:'Pinot Noir', pt:'Pinot Noir', en:'Pinot Noir'}, bottleImg:'uploads/Assets/montsecano-bottle-pinot-noir-2.jpeg'},
+      {id:'mo-quebradilla', name:'Quebradilla', varietal:{es:'100% Pinot Blanc', pt:'100% Pinot Blanc', en:'100% Pinot Blanc'}, bottleImg:'uploads/Assets/montsecano-bottle-la-leonie-chardonnay.jpeg'},
+      {id:'mo-montsecano', name:'Montsecano', varietal:{es:'Pinot Noir · vino insignia', pt:'Pinot Noir · vinho principal', en:'Pinot Noir · flagship'}, bottleImg:'uploads/Assets/montsecano-bottle-pinot-noir.jpeg'}
+    ]
+  },
+  {
+    id:'antiyal', founded:1996, founders:'Álvaro Espinoza y familia',
+    heroImg:'uploads/Assets/06_antiyal_harvest.jpg',
+    email:'hola@antiyal.com', phone:'+56 9 7234 5678', address:'Camino Sao Vicente s/n, Alto Maipo, Chile',
+    name:{es:'Antiyal', pt:'Antiyal', en:'Antiyal'},
+    region:{es:'Maipo Alto', pt:'Maipo Alto', en:'Maipo Alto'},
+    story:{
+      es:'Álvaro Espinoza fundó Antiyal en 1996 en el Alto Maipo con una convicción: si el suelo está vivo, el vino lo estará también. Junto a su familia convirtió el predio en un organismo biodinámico completo, con animales, compost propio y calendario lunar, mucho antes de que la palabra "biodinámico" fuera habitual en Chile.',
+      pt:'Álvaro Espinoza fundou a Antiyal em 1996 no Alto Maipo com uma convicção: se o solo está vivo, o vinho também estará. Junto com sua família, transformou a propriedade em um organismo biodinâmico completo, com animais, compostagem própria e calendário lunar, muito antes de a palavra "biodinâmico" ser comum no Chile.',
+      en:'Álvaro Espinoza founded Antiyal in 1996 in Alto Maipo on one conviction: if the soil is alive, the wine will be too. Together with his family he turned the estate into a full biodynamic organism — animals, its own compost, a lunar calendar — long before "biodynamic" was a common word in Chile.'
+    },
+    philosophy:{
+      es:'Biodinámica certificada y baja intervención: cada vino es un retrato honesto del Maipo Alto, sin maquillaje de bodega.',
+      pt:'Biodinâmica certificada e baixa intervenção: cada vinho é um retrato honesto do Alto Maipo, sem maquiagem de adega.',
+      en:'Certified biodynamic, low-intervention farming: every wine is an honest portrait of Alto Maipo, with no cellar make-up.'
+    },
+    slides:[
+      {type:'photo', src:'uploads/Assets/06_antiyal_harvest.jpg'},
+      {type:'photo', src:'uploads/Assets/antiyal-biodynamic-goat.jpg'},
+      {type:'photo', src:'uploads/Assets/antiyal-fireside-evening.png'}
+    ],
+    wines:[
+      {id:'an-purafe-carmenere', name:'Pura Fe Carmenère', varietal:{es:'Carmenère', pt:'Carmenère', en:'Carmenère'}, bottleImg:'uploads/Assets/antiyal-pura-fe-carmenere.png'},
+      {id:'an-purafe-cabernet', name:'Pura Fe Cabernet Sauvignon', varietal:{es:'Cabernet Sauvignon', pt:'Cabernet Sauvignon', en:'Cabernet Sauvignon'}, bottleImg:'uploads/Assets/antiyal-pura-fe-cabernet.png'},
+      {id:'an-purafe-garnacha', name:'Pura Fe Garnacha-Syrah', varietal:{es:'Garnacha · Syrah', pt:'Garnacha · Syrah', en:'Garnacha · Syrah'}, bottleImg:'uploads/Assets/antiyal-pura-fe-garnacha-syrah.png'},
+      {id:'an-kuyen', name:'Kuyen', varietal:{es:'Mezcla tinta biodinámica', pt:'Mistura tinta biodinâmica', en:'Biodynamic red blend'}},
+      {id:'an-ensamblaje', name:'Antiyal Ensamblaje Tinto', varietal:{es:'Mezcla tinta', pt:'Mistura tinta', en:'Red blend'}},
+      {id:'an-escorial', name:'Antiyal Viñedo Escorial', varietal:{es:'Cabernet Sauvignon · viñedo único', pt:'Cabernet Sauvignon · vinhedo único', en:'Cabernet Sauvignon · single vineyard'}}
+    ]
+  },
+  {
+    id:'laberinto', founded:1993, founders:'Familia fundadora de Laberinto Wines',
+    heroImg:'uploads/Assets/07_laberinto_lake_vineyard.jpg',
+    email:'ventas@laberintowines.cl', phone:'+56 9 6345 6789', address:'Ribera Lago Colbún, Maule Alto, Chile',
+    name:{es:'Laberinto Wines', pt:'Laberinto Wines', en:'Laberinto Wines'},
+    region:{es:'Maule Alto, Lago Colbún', pt:'Maule Alto, Lago Colbún', en:'Upper Maule, Lake Colbún'},
+    story:{
+      es:'Desde 1993, Laberinto Wines cultiva sus viñas a orillas del Lago Colbún, en el Maule Alto, sobre suelos volcánicos que dan a sus vinos una mineralidad poco común. Rodeada de agua y montaña, la propiedad funciona casi como una isla: un laberinto de parcelas pequeñas trabajadas una a una.',
+      pt:'Desde 1993, a Laberinto Wines cultiva suas vinhas às margens do Lago Colbún, no Maule Alto, sobre solos vulcânicos que conferem aos seus vinhos uma mineralidade pouco comum. Rodeada de água e montanha, a propriedade funciona quase como uma ilha: um labirinto de pequenas parcelas trabalhadas uma a uma.',
+      en:'Since 1993, Laberinto Wines has farmed its vines on the shore of Lake Colbún in the Upper Maule, on volcanic soils that give its wines an unusual minerality. Ringed by water and mountains, the estate works almost like an island: a labyrinth of small plots tended one at a time.'
+    },
+    philosophy:{
+      es:'Suelos volcánicos, clima de altura y parcelas mínimas: la diversidad del lugar se embotella tal cual es, línea por línea.',
+      pt:'Solos vulcânicos, clima de altitude e parcelas mínimas: a diversidade do lugar é embotelada como ela é, linha por linha.',
+      en:'Volcanic soils, high-altitude climate, tiny plots: the diversity of the place is bottled as it is, line by line.'
+    },
+    slides:[
+      {type:'photo', src:'uploads/Assets/07_laberinto_lake_vineyard.jpg'},
+      {type:'photo', src:'uploads/Assets/laberinto-aerial-vineyard-labyrinth.jpg'},
+      {type:'photo', src:'uploads/Assets/laberinto-vineyard-valley-view.jpg'}
+    ],
+    wines:[
+      {id:'la-sauvblanc', name:'Sauvignon Blanc', varietal:{es:'Sauvignon Blanc', pt:'Sauvignon Blanc', en:'Sauvignon Blanc'}, bottleImg:'uploads/Assets/laberinto-sauvignon-blanc.webp'},
+      {id:'la-chardonnay', name:'Chardonnay', varietal:{es:'Chardonnay', pt:'Chardonnay', en:'Chardonnay'}},
+      {id:'la-pinotnoir', name:'Pinot Noir', varietal:{es:'Pinot Noir', pt:'Pinot Noir', en:'Pinot Noir'}},
+      {id:'la-mezclatinta', name:'Mezcla Tinta', varietal:{es:'Mezcla tinta', pt:'Mistura tinta', en:'Red blend'}},
+      {id:'la-arcillas-riesling', name:'Arcillas Riesling', varietal:{es:'Riesling', pt:'Riesling', en:'Riesling'}},
+      {id:'la-arcillas-pais', name:'Arcillas País', varietal:{es:'País', pt:'País', en:'País'}, bottleImg:'uploads/Assets/laberinto-arcillas-pais.webp'},
+      {id:'la-trumao-sur', name:'Trumao Sur', varietal:{es:'Sauvignon Blanc', pt:'Sauvignon Blanc', en:'Sauvignon Blanc'}, bottleImg:'uploads/Assets/laberinto-trumao-sur.webp'},
+      {id:'la-trumao-norte', name:'Trumao Norte', varietal:{es:'Mezcla tinta', pt:'Mistura tinta', en:'Red blend'}}
+    ]
+  }
+];
+
+const T = {
+  es:{
+    nav:{home:'Inicio', wineries:'Nuestras Viñas', about:'Contacto', cart:'Carrito'},
+    home:{
+      eyebrow:'Viñadores Asociados', heroTitle:'Tres viñas, una manera de hacer vino',
+      heroSubtitle:'Montsecano, Antiyal y Laberinto Wines: familias chilenas que eligieron el terruño por sobre la escala.',
+      heroCta:'Conocer las viñas',
+      manifestoEyebrow:'Por qué nos unimos', manifestoTitle:'Una respuesta al vino industrial',
+      manifestoBody:'Nos asociamos porque compartíamos la misma incomodidad: ver cómo el vino chileno se volvía cada vez más grande y cada vez más parecido a sí mismo. Viñadores Asociados reúne a tres proyectos familiares e independientes que se niegan a esa lógica y que, juntos, tienen más fuerza para defenderla.',
+      manifestoPoints:['Libre de químicos','Cosecha manual','Embotellado en origen','Producción de pequeña escala','Expresión de terruño','Familias, no corporaciones'],
+      partnersEyebrow:'Las tres familias', partnersTitle:'Rostros, no etiquetas',
+      partnersBody:'Julio Donoso, Álvaro Espinoza y el equipo de Laberinto Wines llevan generaciones combinadas en sus valles. Se conocieron por el mismo motivo por el que ahora exportan juntos: creen que el vino se hace en el viñedo, no en el laboratorio.',
+      wineriesEyebrow:'El catálogo', wineriesTitle:'Explora cada viña', discoverLabel:'Descubrir'
+    },
+    winery:{storyTitle:'Historia', founderLabel:'Fundador', foundedLabel:'Desde', philosophyTitle:'Filosofía', shopTitle:'Catálogo de vinos', addToCart:'Agregar al carrito'},
+    about:{eyebrow:'Sobre nosotros', title:'Tres viñas, un mismo propósito', intro:'Viñadores Asociados es la alianza comercial de tres viñas familiares chilenas — Montsecano, Antiyal y Laberinto Wines — que exportan juntas sin fusionar su identidad. Cada viña fermenta, embotella y despacha sus propios pedidos.', },
+    cart:{title:'Tu carrito', orderFrom:'Pedido de', empty:'Tu carrito está vacío por ahora.', browse:'Ver viñas', remove:'Quitar', pricingNote:'Precios y envío por confirmar', checkout:'Continuar (próximamente)', addedNotice:'Vino agregado al carrito', blockedNotice:'Cada pedido es de una sola viña. Vacía el carrito para agregar vinos de otra bodega.'},
+    footer:{tagline:'Tres viñas familiares, una sola convicción: menos intervención, más terruño.', wineriesLabel:'Viñas', legalLabel:'Legal', shipping:'Envíos', terms:'Términos y condiciones', privacy:'Privacidad', newsletterLabel:'Boletín', emailPlaceholder:'tu@correo.com', subscribe:'Suscribir', rights:'© 2026 Viñadores Asociados. Todos los derechos reservados.'},
+    legalEyebrow:'Legal',
+    shipping:{title:'Información de envío', body:'Estamos definiendo nuestra logística de despacho nacional e internacional. Cada viña fulfilla sus propios pedidos por separado; los tiempos y costos de envío se confirmarán antes del lanzamiento de la tienda.'},
+    terms:{title:'Términos y condiciones', body:'Este es un contenido de referencia. Los términos y condiciones definitivos de Viñadores Asociados y de cada viña asociada se publicarán antes de habilitar la venta en línea.'},
+    privacy:{title:'Política de privacidad', body:'Este es un contenido de referencia. Nuestra política de privacidad definitiva —incluyendo qué datos se recopilan y cómo se comparten con cada viña— se publicará antes del lanzamiento de la tienda.'}
+  },
+  pt:{
+    nav:{home:'Início', wineries:'Nossas Vinícolas', about:'Contato', cart:'Carrinho'},
+    home:{
+      eyebrow:'Viñadores Asociados', heroTitle:'Três vinícolas, um só jeito de fazer vinho',
+      heroSubtitle:'Montsecano, Antiyal e Laberinto Wines: famílias chilenas que escolheram o terroir em vez da escala.',
+      heroCta:'Conhecer as vinícolas',
+      manifestoEyebrow:'Por que nos unimos', manifestoTitle:'Uma resposta ao vinho industrial',
+      manifestoBody:'Nos associamos porque compartilhávamos o mesmo desconforto: ver o vinho chileno cada vez maior e cada vez mais parecido consigo mesmo. Viñadores Asociados reúne três projetos familiares independentes que recusam essa lógica e que, juntos, têm mais força para defendê-la.',
+      manifestoPoints:['Livre de químicos','Colheita manual','Engarrafado na origem','Produção de pequena escala','Expressão de terroir','Famílias, não corporações'],
+      partnersEyebrow:'As três famílias', partnersTitle:'Rostos, não rótulos',
+      partnersBody:'Julio Donoso, Álvaro Espinoza e a equipe da Laberinto Wines somam gerações em seus vales. Conheceram-se pelo mesmo motivo pelo qual hoje exportam juntos: acreditam que o vinho se faz no vinhedo, não no laboratório.',
+      wineriesEyebrow:'O catálogo', wineriesTitle:'Explore cada vinícola', discoverLabel:'Descobrir'
+    },
+    winery:{storyTitle:'História', founderLabel:'Fundador', foundedLabel:'Desde', philosophyTitle:'Filosofia', shopTitle:'Catálogo de vinhos', addToCart:'Adicionar ao carrinho'},
+    about:{eyebrow:'Sobre nós', title:'Três vinícolas, um só propósito', intro:'Viñadores Asociados é a aliança comercial de três vinícolas familiares chilenas — Montsecano, Antiyal e Laberinto Wines — que exportam juntas sem fundir sua identidade. Cada vinícola fermenta, engarrafa e despacha seus próprios pedidos.'},
+    cart:{title:'Seu carrinho', orderFrom:'Pedido de', empty:'Seu carrinho está vazio por enquanto.', browse:'Ver vinícolas', remove:'Remover', pricingNote:'Preços e frete a confirmar', checkout:'Continuar (em breve)', addedNotice:'Vinho adicionado ao carrinho', blockedNotice:'Cada pedido é de uma só vinícola. Esvazie o carrinho para adicionar vinhos de outra vinícola.'},
+    footer:{tagline:'Três vinícolas familiares, uma só convicção: menos intervenção, mais terroir.', wineriesLabel:'Vinícolas', legalLabel:'Legal', shipping:'Envio', terms:'Termos e condições', privacy:'Privacidade', newsletterLabel:'Newsletter', emailPlaceholder:'seu@email.com', subscribe:'Assinar', rights:'© 2026 Viñadores Asociados. Todos os direitos reservados.'},
+    legalEyebrow:'Legal',
+    shipping:{title:'Informações de envio', body:'Estamos definindo nossa logística de envio nacional e internacional. Cada vinícola processa seus próprios pedidos separadamente; prazos e custos de envio serão confirmados antes do lançamento da loja.'},
+    terms:{title:'Termos e condições', body:'Este é um conteúdo de referência. Os termos e condições definitivos da Viñadores Asociados e de cada vinícola associada serão publicados antes de habilitar a venda online.'},
+    privacy:{title:'Política de privacidade', body:'Este é um conteúdo de referência. Nossa política de privacidade definitiva — incluindo quais dados são coletados e como são compartilhados com cada vinícola — será publicada antes do lançamento da loja.'}
+  },
+  en:{
+    nav:{home:'Home', wineries:'Our Wineries', about:'About / Contact', cart:'Cart'},
+    home:{
+      eyebrow:'Viñadores Asociados', heroTitle:'Three wineries, one way of making wine',
+      heroSubtitle:'Montsecano, Antiyal, and Laberinto Wines: Chilean families who chose terroir over scale.',
+      heroCta:'Meet the wineries',
+      manifestoEyebrow:'Why we grouped together', manifestoTitle:'An answer to industrial wine',
+      manifestoBody:'We joined forces because we shared the same discomfort: watching Chilean wine grow bigger and more uniform by the year. Viñadores Asociados brings together three independent family projects that refuse that logic — and together carry more weight to defend it.',
+      manifestoPoints:['Chemical-free','Hand-harvested','Estate-bottled','Small-batch production','Terroir-driven','Families, not corporations'],
+      partnersEyebrow:'The three families', partnersTitle:'Faces, not labels',
+      partnersBody:'Julio Donoso, Álvaro Espinoza, and the Laberinto Wines team carry generations of work in their valleys. They met for the same reason they now export together: they believe wine is made in the vineyard, not the lab.',
+      wineriesEyebrow:'The catalog', wineriesTitle:'Explore each winery', discoverLabel:'Discover'
+    },
+    winery:{storyTitle:'Story', founderLabel:'Founder', foundedLabel:'Since', philosophyTitle:'Philosophy', shopTitle:'Wine catalog', addToCart:'Add to cart'},
+    about:{eyebrow:'About us', title:'Three wineries, one purpose', intro:'Viñadores Asociados is the trade alliance of three family-run Chilean wineries — Montsecano, Antiyal, and Laberinto Wines — exporting together without merging their identities. Each winery ferments, bottles, and fulfills its own orders.'},
+    cart:{title:'Your cart', orderFrom:'Order from', empty:'Your cart is empty for now.', browse:'Browse wineries', remove:'Remove', pricingNote:'Pricing and shipping to be confirmed', checkout:'Continue (coming soon)', addedNotice:'Wine added to cart', blockedNotice:'Each order comes from one winery only. Empty your cart to add wines from another winery.'},
+    footer:{tagline:'Three family wineries, one conviction: less intervention, more terroir.', wineriesLabel:'Wineries', legalLabel:'Legal', shipping:'Shipping', terms:'Terms & Conditions', privacy:'Privacy Policy', newsletterLabel:'Newsletter', emailPlaceholder:'you@email.com', subscribe:'Subscribe', rights:'© 2026 Viñadores Asociados. All rights reserved.'},
+    legalEyebrow:'Legal',
+    shipping:{title:'Shipping information', body:'We are still defining our domestic and international shipping logistics. Each winery fulfills its own orders separately; timelines and shipping costs will be confirmed before the store launches.'},
+    terms:{title:'Terms & Conditions', body:'This is placeholder content. Final terms and conditions for Viñadores Asociados and each partner winery will be published before online sales are enabled.'},
+    privacy:{title:'Privacy Policy', body:'This is placeholder content. Our final privacy policy — including what data is collected and how it is shared with each winery — will be published before the store launches.'}
+  }
+};
+
+class Component extends DCLogic {
+  state = {
+    lang: (this.props && this.props.defaultLang) || 'es',
+    page: 'home',
+    currentWineryId: null,
+    slideIndex: 0,
+    homeSlideIndex: 0,
+    cart: { wineryId: null, items: [] },
+    cartNotice: '',
+    wineriesOpen: false,
+    langOpen: false
+  };
+
+  componentDidMount() {
+    this._timer = setInterval(() => {
+      this.setState(s => {
+        if (s.page === 'winery') {
+          const w = WINERIES_DATA.find(x => x.id === s.currentWineryId);
+          if (!w) return null;
+          return { slideIndex: (s.slideIndex + 1) % w.slides.length };
+        }
+        if (s.page === 'home') {
+          return { homeSlideIndex: (s.homeSlideIndex + 1) % WINERIES_DATA.length };
+        }
+        return null;
+      });
+    }, 5500);
+  }
+
+  goHomeSlide = (i) => this.setState({ homeSlideIndex: i });
+  _scrollToWineries = () => {
+    const el = document.getElementById('va-wineries-section');
+    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 90, behavior: 'smooth' });
+  };
+  componentWillUnmount() { clearInterval(this._timer); clearTimeout(this._noticeTimer); }
+
+  goTo = (page) => { window.scrollTo(0, 0); this.setState({ page, wineriesOpen: false, langOpen: false }); };
+  goToWinery = (id) => { window.scrollTo(0, 0); this.setState({ page: 'winery', currentWineryId: id, slideIndex: 0, wineriesOpen: false, langOpen: false }); };
+  setLang = (lang) => this.setState({ lang, langOpen: false });
+  toggleWineriesMenu = () => this.setState(s => ({ wineriesOpen: !s.wineriesOpen, langOpen: false }));
+  toggleLangMenu = () => this.setState(s => ({ langOpen: !s.langOpen, wineriesOpen: false }));
+
+  nextSlide = () => this.setState(s => {
+    const w = WINERIES_DATA.find(x => x.id === s.currentWineryId);
+    if (!w) return null;
+    return { slideIndex: (s.slideIndex + 1) % w.slides.length };
+  });
+  prevSlide = () => this.setState(s => {
+    const w = WINERIES_DATA.find(x => x.id === s.currentWineryId);
+    if (!w) return null;
+    return { slideIndex: (s.slideIndex - 1 + w.slides.length) % w.slides.length };
+  });
+
+  flashNotice = (key) => {
+    clearTimeout(this._noticeTimer);
+    this.setState({ cartNotice: key });
+    this._noticeTimer = setTimeout(() => this.setState({ cartNotice: '' }), 2600);
+  };
+
+  addToCart = (wineryId, wine) => {
+    const lockMode = (this.props && this.props.cartLockMode) || 'block';
+    this.setState(s => {
+      if (s.cart.wineryId && s.cart.wineryId !== wineryId) {
+        if (lockMode === 'autoClear') {
+          this.flashNotice('added');
+          return { cart: { wineryId, items: [{ ...wine, qty: 1 }] } };
+        }
+        this.flashNotice('blocked');
+        return null;
+      }
+      const items = [...s.cart.items];
+      const existing = items.find(i => i.id === wine.id);
+      if (existing) { existing.qty += 1; } else { items.push({ ...wine, qty: 1 }); }
+      this.flashNotice('added');
+      return { cart: { wineryId, items } };
+    });
+  };
+  incQty = (id) => this.setState(s => ({ cart: { ...s.cart, items: s.cart.items.map(i => i.id === id ? { ...i, qty: i.qty + 1 } : i) } }));
+  decQty = (id) => this.setState(s => ({ cart: { ...s.cart, items: s.cart.items.map(i => i.id === id ? { ...i, qty: Math.max(1, i.qty - 1) } : i) } }));
+  removeItem = (id) => this.setState(s => {
+    const items = s.cart.items.filter(i => i.id !== id);
+    return { cart: { wineryId: items.length ? s.cart.wineryId : null, items } };
+  });
+
+  renderVals() {
+    const lang = this.state.lang;
+    const t = T[lang];
+    const wineries = WINERIES_DATA.map(w => ({
+      id: w.id, name: w.name[lang], region: w.region[lang], founded: w.founded, founders: w.founders,
+      story: w.story[lang], philosophy: w.philosophy[lang], heroImg: w.heroImg,
+      email: w.email, phone: w.phone, address: w.address,
+      goToThis: () => this.goToWinery(w.id),
+      heroStyle: 'width:100%;height:100%;background-image:url(' + JSON.stringify(w.heroImg) + ');background-size:cover;background-position:center;transition:transform 0.5s',
+      wines: w.wines.map(wn => ({
+        id: wn.id, name: wn.name, varietal: wn.varietal[lang], add: () => this.addToCart(w.id, wn),
+        hasBottle: !!wn.bottleImg,
+        noBottle: !wn.bottleImg,
+        bottleStyle: wn.bottleImg ? ('width:100%;height:100%;background-image:url(' + JSON.stringify(wn.bottleImg) + ');background-size:contain;background-repeat:no-repeat;background-position:center') : ''
+      }))
+    }));
+    const currentWineryRaw = WINERIES_DATA.find(w => w.id === this.state.currentWineryId);
+    const currentWinery = wineries.find(w => w.id === this.state.currentWineryId) || null;
+    const currentSlides = currentWineryRaw ? currentWineryRaw.slides.map((sl, i) => ({
+      isPhoto: sl.type === 'photo', isSlot: sl.type === 'slot',
+      src: sl.src, id: sl.id, placeholder: sl.placeholder ? sl.placeholder[lang] : '',
+      bgStyle: sl.type === 'photo' ? ('width:100%;height:100%;background-image:url(' + JSON.stringify(sl.src) + ');background-size:cover;background-position:center') : '',
+      wrapStyle: 'position:absolute;inset:0;opacity:' + (i === this.state.slideIndex ? 1 : 0) + ';transition:opacity 0.8s ease'
+    })) : [];
+
+    const cartItems = this.state.cart.items.map(ci => ({
+      ...ci,
+      inc: () => this.incQty(ci.id), dec: () => this.decQty(ci.id), remove: () => this.removeItem(ci.id)
+    }));
+    const cartWinery = wineries.find(w => w.id === this.state.cart.wineryId) || null;
+    const cartCount = cartItems.reduce((n, i) => n + i.qty, 0);
+
+    const page = this.state.page;
+    const simplePages = { shipping: t.shipping, terms: t.terms, privacy: t.privacy };
+    const isSimplePage = !!simplePages[page];
+
+    return {
+      t, lang, wineries, currentWinery, currentSlides,
+      isHome: page === 'home', isWinery: page === 'winery', isAbout: page === 'about', isCart: page === 'cart',
+      isSimplePage, simplePageTitle: isSimplePage ? simplePages[page].title : '', simplePageBody: isSimplePage ? simplePages[page].body : '',
+      cartItems, cartWinery, cartCount, cartEmpty: cartItems.length === 0, cartHasItems: cartItems.length > 0,
+      showNotice: !!this.state.cartNotice,
+      cartNoticeText: this.state.cartNotice === 'blocked' ? t.cart.blockedNotice : (this.state.cartNotice === 'added' ? t.cart.addedNotice : ''),
+      langLabel: lang.toUpperCase(),
+      wineriesDropClass: 'va-drop' + (this.state.wineriesOpen ? ' va-open' : ''),
+      langDropClass: 'va-drop' + (this.state.langOpen ? ' va-open' : ''),
+      toggleWineriesMenu: this.toggleWineriesMenu, toggleLangMenu: this.toggleLangMenu,
+      showNewsletter: (this.props && this.props.showNewsletter) ?? true,
+      goHome: () => this.goTo('home'),
+      goAbout: () => this.goTo('about'),
+      goCart: () => this.goTo('cart'),
+      goShipping: () => this.goTo('shipping'),
+      goTerms: () => this.goTo('terms'),
+      goPrivacy: () => this.goTo('privacy'),
+      goToWineries: () => {
+        if (this.state.page !== 'home') { this.setState({ page: 'home' }); setTimeout(this._scrollToWineries, 80); }
+        else { this._scrollToWineries(); }
+      },
+      heroSlides: WINERIES_DATA.map((w, i) => ({
+        bgStyle: 'position:absolute;inset:0;background-image:url(' + JSON.stringify(w.heroImg) + ');background-size:cover;background-position:center;opacity:' + (i === this.state.homeSlideIndex ? 1 : 0) + ';transition:opacity 1s ease',
+        dotStyle: 'width:9px;height:9px;border-radius:50%;border:1px solid #F5F0E8;cursor:pointer;background:' + (i === this.state.homeSlideIndex ? '#F5F0E8' : 'transparent') + ';padding:0',
+        goTo: () => this.goHomeSlide(i)
+      })),
+      goCheckoutPlaceholder: () => this.flashNotice('added') && null,
+      setLangEs: () => this.setLang('es'), setLangPt: () => this.setLang('pt'), setLangEn: () => this.setLang('en'),
+      nextSlide: this.nextSlide, prevSlide: this.prevSlide
+    };
+  }
+}
+</script>
+</body>
+</html>
