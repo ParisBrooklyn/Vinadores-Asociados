@@ -1,0 +1,173 @@
+/* ============================================================
+   CLFANAGT — Brand Tokens
+   Foundational variables. Direction-specific palettes are
+   scoped via [data-direction="A|B|C"] on a wrapping element.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* ---------- Type ---------- */
+  --ff-display: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  --ff-display-alt: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  --ff-section: 'DM Sans', 'Inter', system-ui, sans-serif;
+  --ff-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --ff-meta: 'Inter', system-ui, sans-serif;
+
+  /* Type scale (document) */
+  --fs-display: 64px;
+  --fs-h1: 44px;
+  --fs-h2: 28px;
+  --fs-h3: 20px;
+  --fs-body: 11.5px;
+  --fs-small: 10px;
+  --fs-micro: 8.5px;
+
+  /* Tracking */
+  --tr-meta: 0.18em;
+  --tr-section: 0.14em;
+  --tr-tight: -0.01em;
+
+  /* Layout */
+  --rule: 0.6px;
+  --rule-strong: 1.2px;
+
+  /* ---------- Language accents (universal) ---------- */
+  --lang-fr: #B31B2C;
+  --lang-en: #2A5F4A;
+  --lang-nl: #D4621A;
+}
+
+/* ============================================================
+   DIRECTION A — Ink & Amber
+   ============================================================ */
+[data-direction="A"] {
+  --c-primary: #0D0B08;
+  --c-secondary: #F5F0E8;
+  --c-accent: #C17F24;
+  --c-mid: #8A8178;
+  --c-mid-soft: #C9C2B8;
+  --c-page: #F5F0E8;
+  --c-ink: #0D0B08;
+  --c-rule: #1A1612;
+  --c-rule-soft: #C9C2B8;
+  --c-tint: #EBE3D6;
+}
+
+/* ============================================================
+   DIRECTION B — Continental Green
+   ============================================================ */
+[data-direction="B"] {
+  --c-primary: #1A3A2A;
+  --c-secondary: #FAFAF5;
+  --c-accent: #C9A844;
+  --c-mid: #7A8070;
+  --c-mid-soft: #C5C7BD;
+  --c-page: #FAFAF5;
+  --c-ink: #1A3A2A;
+  --c-rule: #1A3A2A;
+  --c-rule-soft: #C5C7BD;
+  --c-tint: #EFEFE6;
+}
+
+/* ============================================================
+   DIRECTION C — Naval Precision
+   ============================================================ */
+[data-direction="C"] {
+  --c-primary: #001F3F;
+  --c-secondary: #FFFFFF;
+  --c-accent: #2C5F8A;
+  --c-mid: #0D0D0D;
+  --c-mid-soft: #B8BCC2;
+  --c-page: #F4F4F0;
+  --c-ink: #0D0D0D;
+  --c-rule: #001F3F;
+  --c-rule-soft: #C8CBCF;
+  --c-tint: #E8E8E2;
+}
+
+/* ============================================================
+   Shared base
+   ============================================================ */
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--ff-body);
+  color: var(--c-ink, #0D0B08);
+  background: #E5E3DD;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'kern' 1, 'liga' 1, 'tnum' 0;
+}
+
+.tabular { font-variant-numeric: tabular-nums; font-feature-settings: 'tnum' 1; }
+.smallcaps { letter-spacing: var(--tr-meta); text-transform: uppercase; font-weight: 500; }
+
+/* Page sheet (A4 portrait, 96dpi proxy: 794 x 1123) */
+.sheet {
+  width: 794px;
+  height: 1123px;
+  background: var(--c-page);
+  color: var(--c-ink);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 30px 80px -20px rgba(0,0,0,0.25), 0 8px 20px -8px rgba(0,0,0,0.15);
+  margin: 0 auto;
+}
+
+.sheet--landscape {
+  width: 1123px;
+  height: 794px;
+}
+
+/* 16:9 slide (1280 x 720 base) */
+.slide {
+  width: 1280px;
+  height: 720px;
+  background: var(--c-page);
+  color: var(--c-ink);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 30px 80px -20px rgba(0,0,0,0.25), 0 8px 20px -8px rgba(0,0,0,0.15);
+  margin: 0 auto;
+}
+
+/* Language accent stripe */
+.lang-stripe {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 5px;
+  z-index: 5;
+}
+.lang-stripe[data-lang="fr"] { background: var(--lang-fr); }
+.lang-stripe[data-lang="en"] { background: var(--lang-en); }
+.lang-stripe[data-lang="nl"] { background: var(--lang-nl); }
+
+.lang-tag {
+  font-family: var(--ff-meta);
+  font-size: 9px;
+  letter-spacing: var(--tr-meta);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.lang-tag[data-lang="fr"] { color: var(--lang-fr); }
+.lang-tag[data-lang="en"] { color: var(--lang-en); }
+.lang-tag[data-lang="nl"] { color: var(--lang-nl); }
+
+/* Wordmark */
+.wordmark {
+  font-family: var(--ff-display);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--c-ink);
+}
+.wordmark--lg { font-size: 36px; letter-spacing: 0.05em; }
+.wordmark--xl { font-size: 64px; letter-spacing: 0.06em; }
+
+/* Hairline rules */
+.rule { height: 1px; background: var(--c-rule); opacity: 0.9; }
+.rule-soft { height: 1px; background: var(--c-rule-soft); }

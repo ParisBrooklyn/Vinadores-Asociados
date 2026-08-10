@@ -1,0 +1,118 @@
+{
+  "plugins": [
+    "react",
+    "import"
+  ],
+  "rules": {
+    "react/forbid-elements": [
+      "warn",
+      {
+        "forbid": []
+      }
+    ],
+    "no-restricted-imports": [
+      "warn",
+      {
+        "patterns": []
+      }
+    ],
+    "no-restricted-syntax": [
+      "warn",
+      {
+        "selector": "Literal[value=/#[0-9a-fA-F]{3,8}\\b/]",
+        "message": "Raw hex color — use a design-system color token via var()."
+      },
+      {
+        "selector": "Literal[value=/\\b\\d+px\\b/]",
+        "message": "Raw px value — use a design-system spacing token via var()."
+      },
+      {
+        "selector": "Literal[value=/font-family\\s*:\\s*(?!['\\\"]?(?:Playfair Display|Cormorant Garamond|DM Sans|Inter))/i]",
+        "message": "Font not provided by the design system. Available: Playfair Display, Cormorant Garamond, DM Sans, Inter."
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/index.js"
+      ],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    }
+  ],
+  "x-omelette": {
+    "components": {},
+    "tokens": [
+      "--c-accent",
+      "--c-ink",
+      "--c-mid",
+      "--c-mid-soft",
+      "--c-page",
+      "--c-primary",
+      "--c-rule",
+      "--c-rule-soft",
+      "--c-secondary",
+      "--c-tint",
+      "--ff-body",
+      "--ff-display",
+      "--ff-display-alt",
+      "--ff-meta",
+      "--ff-section",
+      "--fs-body",
+      "--fs-display",
+      "--fs-h1",
+      "--fs-h2",
+      "--fs-h3",
+      "--fs-micro",
+      "--fs-small",
+      "--lang-en",
+      "--lang-fr",
+      "--lang-nl",
+      "--rule",
+      "--rule-strong",
+      "--tr-meta",
+      "--tr-section",
+      "--tr-tight"
+    ],
+    "tokenKinds": {
+      "--ff-display": "other",
+      "--ff-display-alt": "other",
+      "--ff-section": "other",
+      "--ff-body": "other",
+      "--ff-meta": "other",
+      "--fs-display": "spacing",
+      "--fs-h1": "spacing",
+      "--fs-h2": "spacing",
+      "--fs-h3": "spacing",
+      "--fs-body": "spacing",
+      "--fs-small": "spacing",
+      "--fs-micro": "spacing",
+      "--tr-meta": "spacing",
+      "--tr-section": "spacing",
+      "--tr-tight": "spacing",
+      "--rule": "spacing",
+      "--rule-strong": "spacing",
+      "--lang-fr": "color",
+      "--lang-en": "color",
+      "--lang-nl": "color",
+      "--c-primary": "color",
+      "--c-secondary": "color",
+      "--c-accent": "color",
+      "--c-mid": "color",
+      "--c-mid-soft": "color",
+      "--c-page": "color",
+      "--c-ink": "color",
+      "--c-rule": "color",
+      "--c-rule-soft": "color",
+      "--c-tint": "color"
+    },
+    "fontFamilies": [
+      "Cormorant Garamond",
+      "DM Sans",
+      "Inter",
+      "Playfair Display"
+    ]
+  }
+}
