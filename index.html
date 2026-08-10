@@ -16,10 +16,11 @@
 html,body{margin:0;padding:0}
 .va-drop-panel{display:none;position:absolute;top:100%;left:0;min-width:180px;background:#F5F0E8;border:1px solid #1A1612;box-shadow:0 12px 28px -8px rgba(13,11,8,0.35);z-index:40;padding:6px 0}
 .va-drop:hover .va-drop-panel,.va-drop:focus-within .va-drop-panel,.va-drop.va-open .va-drop-panel{display:block}
+.va-hamburger{display:none}
 @media (max-width:760px){
-  header{padding:12px 20px !important;gap:12px !important}
-  header nav{order:3;width:100%;justify-content:center;gap:22px !important}
-  .va-hide-mobile{display:none !important}
+  header{padding:12px 20px !important}
+  .va-desktop-only{display:none !important}
+  .va-hamburger{display:flex !important}
   .va-split{grid-template-columns:1fr !important}
   .va-footer-grid{grid-template-columns:1fr 1fr !important;gap:32px !important}
 }
@@ -38,7 +39,7 @@ input::placeholder{color:#8A8178}
   <div onClick="{{ goHome }}" style="cursor:pointer;display:flex;align-items:center;gap:14px">
     <img src="uploads/Assets/03_logo_oval.jpg" alt="Viñadores Asociados" style="height:52px;width:auto;object-fit:contain">
   </div>
-  <nav style="display:flex;align-items:center;gap:30px;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;font-weight:500">
+  <nav class="va-desktop-only" style="display:flex;align-items:center;gap:30px;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;font-weight:500">
     <a onClick="{{ goHome }}" style="color:#0D0B08;text-decoration:none;cursor:pointer" style-hover="color:#C17F24">{{ t.nav.home }}</a>
     <div class="{{ wineriesDropClass }}" tabindex="0" style="position:relative;padding:6px 0">
       <span onClick="{{ toggleWineriesMenu }}" style="cursor:pointer;color:#0D0B08">{{ t.nav.wineries }} ▾</span>
@@ -50,7 +51,7 @@ input::placeholder{color:#8A8178}
     </div>
     <a onClick="{{ goAbout }}" style="color:#0D0B08;text-decoration:none;cursor:pointer" style-hover="color:#C17F24">{{ t.nav.about }}</a>
   </nav>
-  <div style="display:flex;align-items:center;gap:22px">
+  <div class="va-desktop-only" style="display:flex;align-items:center;gap:22px">
     <div class="{{ langDropClass }}" tabindex="0" style="position:relative;padding:6px 0;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:500">
       <span onClick="{{ toggleLangMenu }}" style="cursor:pointer;display:flex;align-items:center;gap:6px">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0D0B08" stroke-width="1.6"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19M12 2.5c2.8 2.6 4.3 6 4.3 9.5s-1.5 6.9-4.3 9.5c-2.8-2.6-4.3-6-4.3-9.5S9.2 5.1 12 2.5z"/></svg>
@@ -67,7 +68,33 @@ input::placeholder{color:#8A8178}
       {{ t.nav.cart }} ({{ cartCount }})
     </a>
   </div>
+  <div style="display:flex;align-items:center;gap:16px">
+    <a onClick="{{ goCart }}" class="va-hamburger" style="cursor:pointer;color:#0D0B08;text-decoration:none">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0D0B08" stroke-width="1.7"><path d="M3 4h2l2.4 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9.5" cy="20.5" r="1.3" fill="#0D0B08"/><circle cx="17.5" cy="20.5" r="1.3" fill="#0D0B08"/></svg>
+    </a>
+    <button onClick="{{ toggleMobileMenu }}" class="va-hamburger" style="align-items:center;justify-content:center;width:34px;height:34px;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:0">
+      <span style="display:block;width:24px;height:1.5px;background:#0D0B08"></span>
+      <span style="display:block;width:24px;height:1.5px;background:#0D0B08"></span>
+    </button>
+  </div>
 </header>
+
+<sc-if value="{{ mobileMenuOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:sticky;top:81px;z-index:45;background:#F5F0E8;border-bottom:1px solid #1A1612;padding:24px 28px;display:flex;flex-direction:column;gap:20px;font-family:'DM Sans',sans-serif">
+  <a onClick="{{ goHome }}" style="color:#0D0B08;text-decoration:none;font-size:14px;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer">{{ t.nav.home }}</a>
+  <div style="display:flex;flex-direction:column;gap:14px;padding-left:14px;border-left:2px solid #C9C2B8">
+    <sc-for list="{{ wineries }}" as="w" hint-placeholder-count="3">
+      <a onClick="{{ w.goToThis }}" style="color:#0D0B08;text-decoration:none;font-size:13.5px;letter-spacing:0.04em;cursor:pointer">{{ w.name }}</a>
+    </sc-for>
+  </div>
+  <a onClick="{{ goAbout }}" style="color:#0D0B08;text-decoration:none;font-size:14px;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer">{{ t.nav.about }}</a>
+  <div style="display:flex;gap:14px;padding-top:8px;border-top:1px solid #C9C2B8">
+    <button onClick="{{ setLangEs }}" style="background:none;border:1px solid #C9C2B8;padding:8px 14px;font-size:12px;cursor:pointer">ES</button>
+    <button onClick="{{ setLangPt }}" style="background:none;border:1px solid #C9C2B8;padding:8px 14px;font-size:12px;cursor:pointer">PT</button>
+    <button onClick="{{ setLangEn }}" style="background:none;border:1px solid #C9C2B8;padding:8px 14px;font-size:12px;cursor:pointer">EN</button>
+  </div>
+</div>
+</sc-if>
 
 <sc-if value="{{ showNotice }}" hint-placeholder-val="{{ false }}">
   <div style="position:fixed;top:80px;right:24px;z-index:80;background:#0D0B08;color:#F5F0E8;padding:14px 22px;font-family:'DM Sans',sans-serif;font-size:13px;letter-spacing:0.02em;box-shadow:0 12px 30px -8px rgba(0,0,0,0.4);max-width:320px">{{ cartNoticeText }}</div>
@@ -497,7 +524,8 @@ class Component extends DCLogic {
     cart: { wineryId: null, items: [] },
     cartNotice: '',
     wineriesOpen: false,
-    langOpen: false
+    langOpen: false,
+    mobileMenuOpen: false
   };
 
   componentDidMount() {
@@ -523,11 +551,12 @@ class Component extends DCLogic {
   };
   componentWillUnmount() { clearInterval(this._timer); clearTimeout(this._noticeTimer); }
 
-  goTo = (page) => { window.scrollTo(0, 0); this.setState({ page, wineriesOpen: false, langOpen: false }); };
-  goToWinery = (id) => { window.scrollTo(0, 0); this.setState({ page: 'winery', currentWineryId: id, slideIndex: 0, wineriesOpen: false, langOpen: false }); };
-  setLang = (lang) => this.setState({ lang, langOpen: false });
+  goTo = (page) => { window.scrollTo(0, 0); this.setState({ page, wineriesOpen: false, langOpen: false, mobileMenuOpen: false }); };
+  goToWinery = (id) => { window.scrollTo(0, 0); this.setState({ page: 'winery', currentWineryId: id, slideIndex: 0, wineriesOpen: false, langOpen: false, mobileMenuOpen: false }); };
+  setLang = (lang) => this.setState({ lang, langOpen: false, mobileMenuOpen: false });
   toggleWineriesMenu = () => this.setState(s => ({ wineriesOpen: !s.wineriesOpen, langOpen: false }));
   toggleLangMenu = () => this.setState(s => ({ langOpen: !s.langOpen, wineriesOpen: false }));
+  toggleMobileMenu = () => this.setState(s => ({ mobileMenuOpen: !s.mobileMenuOpen }));
 
   nextSlide = () => this.setState(s => {
     const w = WINERIES_DATA.find(x => x.id === s.currentWineryId);
@@ -618,6 +647,7 @@ class Component extends DCLogic {
       wineriesDropClass: 'va-drop' + (this.state.wineriesOpen ? ' va-open' : ''),
       langDropClass: 'va-drop' + (this.state.langOpen ? ' va-open' : ''),
       toggleWineriesMenu: this.toggleWineriesMenu, toggleLangMenu: this.toggleLangMenu,
+      mobileMenuOpen: this.state.mobileMenuOpen, toggleMobileMenu: this.toggleMobileMenu,
       showNewsletter: (this.props && this.props.showNewsletter) ?? true,
       goHome: () => this.goTo('home'),
       goAbout: () => this.goTo('about'),
