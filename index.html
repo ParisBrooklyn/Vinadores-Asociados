@@ -226,8 +226,9 @@ input::placeholder{color:#8A8178}
             </sc-if>
           </div>
           <div style="padding:24px;display:flex;flex-direction:column;gap:8px;flex:1">
-            <h3 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:500;font-size:19px;margin:0">{{ wn.name }}</h3>
-            <div style="font-family:'DM Sans',sans-serif;font-size:11.5px;letter-spacing:0.06em;color:#8A8178;flex:1">{{ wn.varietal }}</div>
+            <h3 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:500;font-size:19px;margin:0">{{ wn.name }} <span style="font-style:normal;color:#8A8178;font-size:15px">{{ wn.year }}</span></h3>
+            <div style="font-family:'DM Sans',sans-serif;font-size:11.5px;letter-spacing:0.06em;color:#8A8178">{{ wn.varietal }}</div>
+            <p style="font-family:'Inter',sans-serif;font-size:12.5px;line-height:1.7;color:#1A1612;margin:6px 0 0;flex:1">{{ wn.description }}</p>
             <button onClick="{{ wn.add }}" style="margin-top:12px;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;background:#0D0B08;color:#F5F0E8;border:none;padding:13px 0;cursor:pointer" style-hover="background:#C17F24;color:#0D0B08">{{ t.winery.addToCart }}</button>
           </div>
         </div>
@@ -459,7 +460,7 @@ const T = {
       partnersBody:'Julio Donoso, Álvaro Espinoza y el equipo de Laberinto Wines llevan generaciones combinadas en sus valles. Se conocieron por el mismo motivo por el que ahora exportan juntos: creen que el vino se hace en el viñedo, no en el laboratorio.',
       wineriesEyebrow:'El catálogo', wineriesTitle:'Explora cada viña', discoverLabel:'Descubrir'
     },
-    winery:{storyTitle:'Historia', founderLabel:'Fundador', foundedLabel:'Desde', philosophyTitle:'Filosofía', shopTitle:'Catálogo de vinos', addToCart:'Agregar al carrito'},
+    winery:{storyTitle:'Historia', founderLabel:'Fundador', foundedLabel:'Desde', philosophyTitle:'Filosofía', shopTitle:'Catálogo de vinos', addToCart:'Agregar al carrito', placeholderDesc:'100% Pinot Noir, cultivado biodinámicamente, de un único viñedo. Las vides tienen 15 años y crecen en suelos graníticos a poco más de 1.000 pies de elevación. Fermentado y criado completamente en huevo de concreto.'},
     about:{eyebrow:'Sobre nosotros', title:'Tres viñas, un mismo propósito', intro:'Viñadores Asociados es la alianza comercial de tres viñas familiares chilenas — Montsecano, Antiyal y Laberinto Wines — que exportan juntas sin fusionar su identidad. Cada viña fermenta, embotella y despacha sus propios pedidos.', },
     cart:{title:'Tu carrito', orderFrom:'Pedido de', empty:'Tu carrito está vacío por ahora.', browse:'Ver viñas', remove:'Quitar', pricingNote:'Precios y envío por confirmar', checkout:'Continuar (próximamente)', addedNotice:'Vino agregado al carrito', blockedNotice:'Cada pedido es de una sola viña. Vacía el carrito para agregar vinos de otra bodega.'},
     footer:{tagline:'Tres viñas familiares, una sola convicción: menos intervención, más terruño.', wineriesLabel:'Viñas', legalLabel:'Legal', shipping:'Envíos', terms:'Términos y condiciones', privacy:'Privacidad', newsletterLabel:'Boletín', emailPlaceholder:'tu@correo.com', subscribe:'Suscribir', rights:'© 2026 Viñadores Asociados. Todos los derechos reservados.'},
@@ -481,7 +482,7 @@ const T = {
       partnersBody:'Julio Donoso, Álvaro Espinoza e a equipe da Laberinto Wines somam gerações em seus vales. Conheceram-se pelo mesmo motivo pelo qual hoje exportam juntos: acreditam que o vinho se faz no vinhedo, não no laboratório.',
       wineriesEyebrow:'O catálogo', wineriesTitle:'Explore cada vinícola', discoverLabel:'Descobrir'
     },
-    winery:{storyTitle:'História', founderLabel:'Fundador', foundedLabel:'Desde', philosophyTitle:'Filosofia', shopTitle:'Catálogo de vinhos', addToCart:'Adicionar ao carrinho'},
+    winery:{storyTitle:'História', founderLabel:'Fundador', foundedLabel:'Desde', philosophyTitle:'Filosofia', shopTitle:'Catálogo de vinhos', addToCart:'Adicionar ao carrinho', placeholderDesc:'100% Pinot Noir, cultivado biodinamicamente, de um único vinhedo. As videiras têm 15 anos e crescem em solos graníticos a pouco mais de 1.000 pés de elevação. Fermentado e envelhecido completamente em ovo de concreto.'},
     about:{eyebrow:'Sobre nós', title:'Três vinícolas, um só propósito', intro:'Viñadores Asociados é a aliança comercial de três vinícolas familiares chilenas — Montsecano, Antiyal e Laberinto Wines — que exportam juntas sem fundir sua identidade. Cada vinícola fermenta, engarrafa e despacha seus próprios pedidos.'},
     cart:{title:'Seu carrinho', orderFrom:'Pedido de', empty:'Seu carrinho está vazio por enquanto.', browse:'Ver vinícolas', remove:'Remover', pricingNote:'Preços e frete a confirmar', checkout:'Continuar (em breve)', addedNotice:'Vinho adicionado ao carrinho', blockedNotice:'Cada pedido é de uma só vinícola. Esvazie o carrinho para adicionar vinhos de outra vinícola.'},
     footer:{tagline:'Três vinícolas familiares, uma só convicção: menos intervenção, mais terroir.', wineriesLabel:'Vinícolas', legalLabel:'Legal', shipping:'Envio', terms:'Termos e condições', privacy:'Privacidade', newsletterLabel:'Newsletter', emailPlaceholder:'seu@email.com', subscribe:'Assinar', rights:'© 2026 Viñadores Asociados. Todos os direitos reservados.'},
@@ -503,7 +504,7 @@ const T = {
       partnersBody:'Julio Donoso, Álvaro Espinoza, and the Laberinto Wines team carry generations of work in their valleys. They met for the same reason they now export together: they believe wine is made in the vineyard, not the lab.',
       wineriesEyebrow:'The catalog', wineriesTitle:'Explore each winery', discoverLabel:'Discover'
     },
-    winery:{storyTitle:'Story', founderLabel:'Founder', foundedLabel:'Since', philosophyTitle:'Philosophy', shopTitle:'Wine catalog', addToCart:'Add to cart'},
+    winery:{storyTitle:'Story', founderLabel:'Founder', foundedLabel:'Since', philosophyTitle:'Philosophy', shopTitle:'Wine catalog', addToCart:'Add to cart', placeholderDesc:'100% Pinot Noir, farmed biodynamically, from a single vineyard. The vines are 15 years old, and grow in granitic soils at just over 1,000 feet elevation. Aged and fermented completely in concrete egg.'},
     about:{eyebrow:'About us', title:'Three wineries, one purpose', intro:'Viñadores Asociados is the trade alliance of three family-run Chilean wineries — Montsecano, Antiyal, and Laberinto Wines — exporting together without merging their identities. Each winery ferments, bottles, and fulfills its own orders.'},
     cart:{title:'Your cart', orderFrom:'Order from', empty:'Your cart is empty for now.', browse:'Browse wineries', remove:'Remove', pricingNote:'Pricing and shipping to be confirmed', checkout:'Continue (coming soon)', addedNotice:'Wine added to cart', blockedNotice:'Each order comes from one winery only. Empty your cart to add wines from another winery.'},
     footer:{tagline:'Three family wineries, one conviction: less intervention, more terroir.', wineriesLabel:'Wineries', legalLabel:'Legal', shipping:'Shipping', terms:'Terms & Conditions', privacy:'Privacy Policy', newsletterLabel:'Newsletter', emailPlaceholder:'you@email.com', subscribe:'Subscribe', rights:'© 2026 Viñadores Asociados. All rights reserved.'},
@@ -611,6 +612,8 @@ class Component extends DCLogic {
       heroStyle: 'width:100%;height:100%;background-image:url(' + JSON.stringify(w.heroImg) + ');background-size:cover;background-position:center;transition:transform 0.5s',
       wines: w.wines.map(wn => ({
         id: wn.id, name: wn.name, varietal: wn.varietal[lang], add: () => this.addToCart(w.id, wn),
+        year: wn.year || 2024,
+        description: (wn.description && wn.description[lang]) || t.winery.placeholderDesc,
         hasBottle: !!wn.bottleImg,
         noBottle: !wn.bottleImg,
         bottleStyle: wn.bottleImg ? ('width:100%;height:100%;background-image:url(' + JSON.stringify(wn.bottleImg) + ');background-size:contain;background-repeat:no-repeat;background-position:center') : ''
